@@ -14,11 +14,11 @@ Coppeliasim: V4.3.0
 
   3. Download the setup provided in this repository. If you are familiar with how to use Git on windows do that. If not click on the green button that says code and click on download zip. Once the download is complete, double click to extract the contents and place them in a location of your choice, the Downloads folder itself works fine.
 
-  4. Launch Coppeliasim. Click on File->Open Scene and navigate to the downloaded setup and select the file “2R_manipulator.ttt". Run the simulation by clicking on the light blue play button.
+  4. Launch Coppeliasim. Click on File->Open Scene and navigate to the downloaded setup and select the file “2R_manipulator.ttt" or PUMA560.ttt based on your assignment. Run the simulation by clicking on the light blue play button.
 
   5. Launch Spyder. Click on File -> Open and navigate to the downloaded setup. Select the file main_exercise.py, edit and complete the marked sections. Run it by clicking on the green play button. 
   
   6. Always ensure that simulation is running before you launch the code, otherwise you will get an error that says "Failed connecting to remote API server. Program ended"
 
-The code relies entirely on the [Legacy remote API functions (Python)](https://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm). 
+The Assignment 1 2 and 3 relies entirely on the [Legacy remote API functions (Python)](https://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm), and PUMA 6DOF Assignment - 1 uses ZeroMQ Remote API so make sure that CoppeliaSim environment is setup that way.
 
