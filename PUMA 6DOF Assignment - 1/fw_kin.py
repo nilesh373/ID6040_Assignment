@@ -40,21 +40,23 @@ def _rot_about_axis(axis, theta):
     return _T_from_Rp(R, (0.0, 0.0, 0.0))
 
 def compute_T_i_im1(i, theta_i):
-    #1) Calculate T^i_{i-1}: joint i's fixed origin transform (joint_origin_xyz/rpy[i])
-    #   followed by the variable rotation theta_i [rad] about joint_axis[i].
-
-    ### Fill this part ###
-    T_i_im1 = ...
-
-    return T_i_im1
+    R_origin = _rpy_to_R(*robot_params.joint_origin_rpy[i]) # Convert roll, pitch, yaw to rotation matrix
+    p_origin = robot_params.joint_origin_xyz[i] # Get the translation vector for the joint origin
+    T_origin = _T_from_Rp(R_origin, p_origin) # Build the homogeneous transformation matrix for the joint origin
+    T_joint = _rot_about_axis(robot_params.joint_axis[i], theta_i) # Build the homogeneous transformation matrix for the joint rotation
+    return T_origin @ T_joint # Return the combined transformation matrix from joint i-1 to joint i
 
 def compute_T_0_n(joint_angles):
-    #2) Calculate T^0_n: chain base_correction_rpy, then compute_T_i_im1(i, theta_i) for
-    #   each joint i = 0..num_joints-1 (theta_i = joint_angles[i] converted to radians),
-    #   then the final tip_offset_xyz.
+    # Convert joint angles to radians
+    joint_angles_rad = [math.radians(angle) for angle in joint_angles] 
 
-    ### Fill this part ###
-    T_0_n = ...
+    T_0_n = _T_from_Rp(_rpy_to_R(*robot_params.base_correction_rpy), (0.0, 0.0, 0.0)) # Initialize T_0_n with the base correction transformation
+
+    for i in range(robot_params.num_joints):
+        T_0_n = T_0_n @ compute_T_i_im1(i, joint_angles_rad[i]) # Multiply the current transformation matrix by the transformation from joint i-1 to joint i    
+
+    T_tip = _T_from_Rp(_rpy_to_R(0.0, 0.0, 0.0), robot_params.tip_offset_xyz) # Build the homogeneous transformation matrix for the tip offset
+    T_0_n = T_0_n @ T_tip # Multiply the current transformation matrix by the tip offset transformation to get the final transformation matrix from the base to the end effector
 
     return T_0_n
 
@@ -65,7 +67,7 @@ def fw_kin(joint_angles):
     #   rotation block.
 
     ### Fill this part ###
-    T_0_n = ...
-    end_effector_position_analytic = ...
+    T_0_n = compute_T_0_n(joint_angles)
+    end_effector_position_analytic = T_0_n[:3, 3]
     
     return end_effector_position_analytic, T_0_n
