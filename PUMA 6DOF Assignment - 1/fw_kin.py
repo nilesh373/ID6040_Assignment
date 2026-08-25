@@ -61,13 +61,7 @@ def compute_T_0_n(joint_angles):
     return T_0_n
 
 def fw_kin(joint_angles):
-    #3) Calculate the Cartesian space coordinates of the end effector -- the position
-    #   vector and the orientation, relative to the base -- from T_0_n = compute_T_0_n(...).
-    #   Position is the translation column of T_0_n; orientation is its top-left 3x3
-    #   rotation block.
-
-    ### Fill this part ###
-    T_0_n = compute_T_0_n(joint_angles)
-    end_effector_position_analytic = T_0_n[:3, 3]
+    T_0_n = compute_T_0_n(joint_angles) # Compute the transformation matrix from the base to the end effector using the provided joint angles
+    end_effector_position_analytic = T_0_n[:3, 3] # Extract the position of the end effector from the transformation matrix
     
-    return end_effector_position_analytic, T_0_n
+    return end_effector_position_analytic, T_0_n # Return both the position of the end effector and the full transformation matrix from the base to the end effector
